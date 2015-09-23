@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: Ivan Karl
+  description: basic role to install python and pyenv on a mac
+  company: Farfanoide
+  license: license MIT
+  min_ansible_version: 1.7
+  # platforms:
+  # - name: Mac
+  #    versions:
+  #      - 10.10
+  categories:
+  - system
+dependencies: []
+

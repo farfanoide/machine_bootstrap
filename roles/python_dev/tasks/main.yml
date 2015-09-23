@@ -1,0 +1,36 @@
+---
+- name: Install pyenv
+  homebrew: name={{ item }} state=latest
+  with_items:
+    - python
+    - pyenv
+    - ccache
+    - pyenv-ccache
+
+- name: Update global pip
+  pip: name=pip state=latest executable=/usr/local/bin/pip
+  environment: pip_env
+
+- name: Install virtualenv globally
+  pip: name=virtualenv state=latest executable=/usr/local/bin/pip
+  environment: pip_env
+
+- name: Install virtualenvwrapper globally
+  pip: name=virtualenvwrapper state=latest executable=/usr/local/bin/pip
+  environment: pip_env
+
+- name: Copy temporary pyenv enabler
+  copy: dest={{ pyenv_enabler }} src=../files/pyenvenabler
+
+- name: Install python versions
+  shell:  source {{ pyenv_enabler }} && pyenv install {{ item }}
+          creates="{{ pyenv_path }}/versions/{{ item }}"
+  with_items: pyenv_default_pythons
+
+- name: Update pip for all python versions
+  pip: name=pip state=latest executable={{ pyenv_path }}/versions/{{ item }}/bin/pip
+  environment: pip_env
+  with_items: pyenv_default_pythons
+
+- name: Set default python for pyenv
+  lineinfile: dest={{ pyenv_path }}/version line={{ pyenv_default_python }} create=yes

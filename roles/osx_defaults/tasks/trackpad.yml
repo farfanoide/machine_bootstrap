@@ -1,0 +1,35 @@
+- name: Disable “natural” (Lion-style) scrolling
+  osx_defaults: >
+    domain=NSGlobalDomain
+    key=com.apple.swipescrolldirection
+    type=bool
+    value=false
+    state=present
+
+- name: Enable tap to click with trackpad for this user
+  osx_defaults: >
+    domain=com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key=Clicking
+    type=bool
+    value=true
+    state=present
+
+- name: Enable tap to click with trackpad for this user
+  osx_defaults: >
+    domain=NSGlobalDomain
+    key=com.apple.mouse.tapBehavior
+    type=int
+    value=1
+    state=present
+
+- name: Enable tap to click for current host
+  shell: defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+
+- name: Enable three finger drag
+  osx_defaults: >
+    domain=com.apple.driver.AppleBluetoothMultitouch.trackpad
+    key=TrackpadThreeFingerDrag
+    type=bool
+    value=true
+    state=present
+

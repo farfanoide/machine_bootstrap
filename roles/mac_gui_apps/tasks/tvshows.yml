@@ -1,0 +1,12 @@
+- name: Install TV Shows
+  homebrew_cask: name=tvshows state=present
+
+- name: Download HD torrents by default
+  osx_defaults: domain={{ tvshows_plist }} key=AutoSelectHDVersion type=bool value=true state=present
+
+- name: Use additional sources
+  osx_defaults: domain={{ tvshows_plist }} key=UseAdditionalSourcesHD type=bool value=true state=present
+
+- name: Prefer magnet links
+  osx_defaults: domain={{ tvshows_plist }} key=PreferMagnets type=bool value=true state=present
+

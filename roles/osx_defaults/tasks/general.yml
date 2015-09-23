@@ -1,0 +1,8 @@
+- name: Save to disk (not to iCloud) by default
+  osx_defaults: domain=NSGlobalDomain key=NSDocumentSaveNewDocumentsToCloud type=bool value=false state=present
+
+- name: Automatically quit printer app once the print jobs complete
+  osx_defaults: domain=com.apple.print.PrintingPrefs key="Quit When Finished" type=bool value=true state=present
+
+- name: Show remaining battery percentage
+  osx_defaults: domain=com.apple.menuextra.battery key=ShowPercent type=string value="YES" state=present

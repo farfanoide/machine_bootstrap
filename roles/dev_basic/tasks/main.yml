@@ -1,0 +1,32 @@
+---
+- name: Update Homebrew itself
+  homebrew: update_homebrew=yes
+
+- name: Install basic stuff
+  homebrew: name={{ item }} state=latest
+  with_items:
+    - htop
+    - reattach-to-user-namespace
+    - ctags
+    - bash
+    - ccat
+    - zsh
+    - ssh-copy-id
+    - tmux
+    - unrar
+    - youtube-dl
+    - cmatrix
+    - python
+    - git
+    - par
+
+- name: Install Vim dependencies
+  homebrew: name=the_silver_searcher state=latest
+
+- name: Install Vim
+  homebrew:
+    name=vim
+    state=latest
+    install_options=with-lua,with-luajit,override-system-vi
+
+- include: docker.yml

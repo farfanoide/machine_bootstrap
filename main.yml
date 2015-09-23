@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  connection: local
+  sudo: false
+  tasks:
+    - include: tasks/default_shell.yml
+    - include: tasks/internet.yml
+  roles:
+    - { role: ssh_folder_permissions }
+    - { role: osx_defaults }
+    - { role: dev_basic }
+    - { role: dotfiles }
+    - { role: python_dev }
+    - { role: mac_gui_apps }
+    - { role: powerline_fonts }

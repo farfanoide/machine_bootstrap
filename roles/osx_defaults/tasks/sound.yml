@@ -1,0 +1,2 @@
+- name: Increase sound quality for Bluetooth headphones/headsets
+  osx_defaults: domain=com.apple.BluetoothAudioAgent key="Apple Bitpool Min (editable)" type=int value=40 state=present

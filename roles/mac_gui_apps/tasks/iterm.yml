@@ -1,0 +1,10 @@
+- name: Install iTerm2
+  homebrew_cask: name=iterm2 state=present
+
+- name: Make it load preferences from Dropbox
+  osx_defaults: >
+    domain="{{ iterm_plist }}"
+    key=PrefsCustomFolder
+    type=string
+    value="{{ ansible_env.HOME }}/Dropbox/syncPrefs"
+    state=present

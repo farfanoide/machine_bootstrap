@@ -1,0 +1,29 @@
+---
+- name: Download/Update Powerline fonts repo
+  git: repo=https://github.com/trazyn/Powerline-font.git dest={{ src_dir }}/powerline_fonts update=yes recursive=yes
+
+- name: Install fonts
+  file:
+    src="{{ src_dir }}/powerline_fonts/{{ item }}"
+    dest="~/Library/Fonts/{{ item }}"
+    state=link
+  with_items:
+    - Envy Code R Bold for Powerline.ttf
+    - Envy Code R Italic for Powerline.ttf
+    - Envy Code R for Powerline.ttf
+    - Inconsolata for Powerline for Powerline.otf
+    - Pragmata Medium for Powerline.ttf
+    - PragmataPro Bold Italic for Powerline.ttf
+    - PragmataPro Bold for Powerline.ttf
+    - PragmataPro Italic for Powerline.ttf
+    - PragmataPro for Powerline.ttf
+    - Sauce Code Powerline Black for Powerline.otf
+    - Sauce Code Powerline Bold for Powerline.otf
+    - Sauce Code Powerline ExtraLight for Powerline.otf
+    - Sauce Code Powerline Light for Powerline.otf
+    - Sauce Code Powerline Semibold for Powerline.otf
+    - Sauce Code Powerline for Powerline.otf
+    - Ubuntu Mono derivative Powerline Bold Italic for Powerline.ttf
+    - Ubuntu Mono derivative Powerline Bold for Powerline.ttf
+    - Ubuntu Mono derivative Powerline Italic for Powerline.ttf
+    - Ubuntu Mono derivative Powerline for Powerline.ttf

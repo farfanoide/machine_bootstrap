@@ -1,0 +1,7 @@
+---
+- name: Install essential packages
+  sudo: yes
+  apt: pkg={{ item }} state=latest update_cache=yes install_recommends=yes
+  with_items:
+    - rtorrent
+    - aria2

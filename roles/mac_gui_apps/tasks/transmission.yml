@@ -1,0 +1,82 @@
+# TODO: add -dict to osx_defaults and replace hide toolbar
+
+- name: Install transmission
+  homebrew_cask: name=transmission state=present
+
+- name: Accept legal warning.
+  osx_defaults: domain="{{ transmission_plist }}" key=WarningLegal type=bool value=false state=present
+
+- name: Hide support warning.
+  osx_defaults: domain="{{ transmission_plist }}" key=WarningDonate type=bool value=false state=present
+
+- name: Hide toolbar
+  command: "defaults write "{{ transmission_plist }}" 'NSToolbar Configuration TRMainToolbar' -dict 'TB Is Shown' 0"
+
+- name: Hide StatusBar
+  osx_defaults: domain="{{ transmission_plist }}" key=StatusBar type=bool value=false state=present
+
+- name: Auto size window to fit all transfers
+  osx_defaults: domain="{{ transmission_plist }}" key=AutoSize type=bool value=true state=present
+
+- name: Remove confirmation dialog when quitting
+  osx_defaults: domain="{{ transmission_plist }}" key=CheckQuit type=bool value=false state=present
+
+- name: Ensure torrents folder exist
+  file: dest="{{ ansible_env.HOME }}/Downloads/torrentz" state=directory
+
+- name: Configure downloads folder usage
+  osx_defaults: >
+    domain="{{ transmission_plist }}"
+    key=DownloadFolder
+    type=string
+    value="{{ ansible_env.HOME }}/Downloads/torrentz"
+    state=present
+
+- name: Enable downloads folder usage
+  osx_defaults: >
+    domain="{{ transmission_plist }}"
+    key=DownloadLocationConstant
+    type=bool value=true state=present
+
+- name: Ensure incomplete folder exist
+  file: dest="{{ ansible_env.HOME }}/Downloads/torrentz/incomplete" state=directory
+
+- name: Configure incomplete folder usage
+  osx_defaults:
+    domain="{{ transmission_plist }}"
+    key=IncompleteDownloadFolder
+    type=string
+    value="{{ ansible_env.HOME }}/Downloads/torrentz/incomplete"
+    state=present
+
+- name: Enable incomplete folder usage
+  osx_defaults: domain="{{ transmission_plist }}" key=UseIncompleteDownloadFolder type=bool value=true state=present
+
+- name: Delete original torrent file after loading.
+  osx_defaults: domain="{{ transmission_plist }}" key=DeleteOriginalTorrent type=bool value=true state=present
+
+- name: Setup autoloading directory
+  osx_defaults:
+    domain="{{ transmission_plist }}"
+    key=AutoImportDirectory
+    type=string
+    value="{{ ansible_env.HOME }}/Downloads"
+    state=present
+
+- name: Enable autoimport
+  osx_defaults: domain="{{ transmission_plist }}" key=AutoImport type=bool value=true state=present
+
+- name: Delete original .torrent file after loading
+  osx_defaults: domain="{{ transmission_plist }}" key=DeleteOriginalTorrent type=bool value=true state=present
+
+- name: Disable 'Add Window' for magnet links
+  osx_defaults: domain="{{ transmission_plist }}" key=MagnetOpenAsk type=bool value=false state=present
+
+- name: Disable 'Add Window' for automatic imports
+  osx_defaults: domain="{{ transmission_plist }}" key=DownloadAskManual type=bool value=true state=present
+
+- name: Use local peer discovery
+  osx_defaults: domain="{{ transmission_plist }}" key=LocalPeerDiscoveryGlobal type=bool value=true state=present
+
+- name: Use compact view for torrents
+  osx_defaults: domain="{{ transmission_plist }}" key=SmallView type=bool value=true state=present

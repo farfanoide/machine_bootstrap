@@ -1,0 +1,44 @@
+- name: Enable highlight hover effect for the grid view of a stack (Dock)
+  osx_defaults: domain=com.apple.dock key=mouse-over-hilite-stack type=bool value=true state=present
+
+- name: Set the icon size of Dock items to 52 pixels
+  osx_defaults: domain=com.apple.dock key=tilesize type=float value=52 state=present
+
+- name: Minimize windows into their application’s icon
+  osx_defaults: domain=com.apple.dock key=minimize-to-application type=bool value=true state=present
+
+- name: Enable spring loading for all Dock items
+  osx_defaults: domain=com.apple.dock key=enable-spring-load-actions-on-all-items type=bool value=true state=present
+
+- name: Show indicator lights for open applications in the Dock
+  osx_defaults: domain=com.apple.dock key=show-process-indicators type=bool value=true state=present
+
+  # Wipe all (default) app icons from the Dock
+  # This is only really useful when setting up a new Mac, or if you don’t use
+  # the Dock to launch apps.
+  # defaults write com.apple.dock persistent-apps -array ""
+
+- name: Don’t animate opening applications from the Dock
+  osx_defaults: domain=com.apple.dock key=launchanim type=bool value=false state=present
+
+- name: Hurry those animations the hell up!
+  osx_defaults: domain=com.apple.dock key=expose-animation-duration type=float value=0.12 state=present
+
+- name: disable the focus ring animation (10.10+)
+  osx_defaults: domain=-globalDomain key=NSUseAnimatedFocusRing type=bool value=false state=present
+
+- name: Disable Dashboard
+  osx_defaults: domain=com.apple.dashboard key=mcx-disabled type=bool value=true state=present
+
+- name: Don’t show Dashboard as a Space
+  osx_defaults: domain=com.apple.dock key=dashboard-in-overlay type=bool value=true state=present
+
+- name: Don’t automatically rearrange Spaces based on most recent use
+  osx_defaults: domain=com.apple.dock key=mru-spaces type=bool value=false state=present
+
+- name: Automatically hide and show the Dock
+  osx_defaults: domain=com.apple.dock key=autohide type=bool value=true state=present
+
+- name: Make Dock more transparent
+  osx_defaults: domain=com.apple.dock key=hide-mirror type=bool value=true state=present
+

@@ -1,0 +1,30 @@
+# TODO: create dock module
+# https://github.com/kcrawford/dockutil
+
+- name: Install dependencies
+  homebrew: name=dockutil state=latest
+
+- name: Remove unused icons
+  shell: dockutil --remove "{{ item }}"
+  with_items:
+    - Launchpad
+    - Safari
+    - Mail
+    - Contacts
+    - Calendar
+    - Notes
+    - Reminders
+    - Maps
+    - Photos
+    - Messages
+    - FaceTime
+    - iTunes
+    - iBooks
+    - App Store
+
+# - name: Add desired icons
+#   shell: dockutil --add "/Applications/{{ item }}.app"
+#   with_items:
+#     - iTerm
+#     - Google Chrome
+#     - Utilities/Activity Monitor

@@ -1,0 +1,6 @@
+---
+group: staff
+username: farfanoide
+repo_url: git@github.com:farfanoide/dotfiles.git
+home_path: /Users
+repo_dest: "{{ home_path }}/{{ username }}/Develop/src/dotfiles"

@@ -1,0 +1,19 @@
+---
+- name: Ensure cask is tapped.
+  homebrew_tap: tap=caskroom/cask state=present
+
+- name: Install cask
+  homebrew: name=brew-cask
+
+- name: Install Mac GUI applications
+  homebrew_cask: name={{ item }} state=present
+  with_items:
+    - appcleaner
+    - subtitles
+    - adium
+    - google-chrome
+    - vlc
+
+- include: tvshows.yml
+- include: transmission.yml
+- include: iterm.yml

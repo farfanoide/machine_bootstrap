@@ -1,0 +1,52 @@
+---
+- name: Download Dotfiles repository
+  git:
+    repo={{ repo_url }}
+    dest={{ repo_dest }}
+    recursive=yes
+    update=no
+
+- name: Symlink dotfiles
+  file:
+    path={{ home_path }}/{{ username }}/.{{ item }}
+    src={{ repo_dest }}/{{ item }}
+    state=link
+    force=yes
+    owner={{ username }}
+    group={{ group }}
+  with_items:
+    - bash_profile
+    - bashrc
+    - bin
+    - fpath
+    - git_template
+    - gitconfig
+    - gitignore_global
+    - inputrc
+    - plugins
+    - tmux
+    - tmux.conf
+    - vim
+    - vimrc
+    - zlogin
+    - zlogout
+    - zprezto
+    - zpreztorc
+    - zprofile
+    - zshenv
+    - zshrc
+
+- name: Download vim-plug
+  get_url:
+    url=https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    dest={{ home_path }}/{{ username }}/.vim/autoload/plug.vim
+    force=yes
+
+- name: Ensure proper owner for vim-plug
+  file:
+    path={{ home_path }}/{{ username }}/.vim/autoload/plug.vim
+    owner={{ username }}
+    group={{ group }}
+
+- name: Install Vim Plugins
+  command: vim +PlugUpdate +qall

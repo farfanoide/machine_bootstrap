@@ -1,0 +1,16 @@
+---
+
+- name: Set parent folder to 0755
+  file: path={{ home_folder }} mode=0755
+
+- name: Set .ssh folder to 0700
+  file: path={{ ssh_folder }} mode=0700
+
+- name: Set authorized_keys to 600
+  file: path={{ ssh_folder }}/authorized_keys mode=0600
+
+- name: Set private key inaccessible
+  file: path={{ ssh_folder }}/id_rsa mode=0600
+
+- name: Set public key world readable
+  file: path={{ ssh_folder }}/id_rsa.pub mode=0644

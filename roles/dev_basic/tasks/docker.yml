@@ -1,0 +1,22 @@
+---
+- name: Install VirtualBox
+  homebrew_cask: name=virtualbox state=present
+
+- name: Configure VirtualBox default vm folder
+  lineinfile:
+    dest="{{ ansible_env.HOME }}/Desktop/VirtualBox.xml"
+    regexp="^(\s*<\w+\sdefaultMachineFolder=\")(\/[\/\w\s]+)(\".*\/>)$"
+    line="\1{{ ansible_env.HOME }}/Develop/vm/VirtualBox VMs\3"
+    backrefs=yes
+
+- name: Install Docker
+  homebrew: name=docker state=latest
+
+- name: Install Docker extras
+  homebrew: name={{ item }} state=latest
+  with_items:
+    - docker-compose
+    - docker-swarm
+    - docker-machine
+
+

@@ -1,0 +1,10 @@
+---
+
+- include: general.yml
+- include: trackpad.yml
+- include: keyboard.yml
+- include: dock.yml
+- include: dock_icons.yml
+- include: finder.yml
+- include: custom_applications.yml
+

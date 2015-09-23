@@ -1,0 +1,10 @@
+vars:
+  homebrews_zsh: /usr/local/bin/zsh
+
+- name: Enable hombrews zsh as default shell
+  sudo: yes
+  lineinfile: dest=/etc/shells line={{ homebrews_zsh }}
+
+- name: Set hombrews zsh as default shell
+  sudo: yes
+  user: name=farfanoide shell={{ homebrews_zsh }}
