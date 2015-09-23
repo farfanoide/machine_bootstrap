@@ -48,5 +48,15 @@
     owner={{ username }}
     group={{ group }}
 
+- name: Ensure proper owner for .cache dir
+  sudo: yes
+  file:
+    path={{ home_path }}/.cache
+    owner={{ username }}
+    group={{ group }}
+    recurse=yes
+    state=directory
+
 - name: Install Vim Plugins
   command: vim +PlugUpdate +qall
+

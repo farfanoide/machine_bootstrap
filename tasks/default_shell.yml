@@ -1,10 +1,12 @@
-vars:
-  homebrews_zsh: /usr/local/bin/zsh
+
+- name: Get Homebrew zsh
+  shell: "echo $(brew --prefix)/bin/zsh"
+  register: homebrew_zsh
 
 - name: Enable hombrews zsh as default shell
   sudo: yes
-  lineinfile: dest=/etc/shells line={{ homebrews_zsh }}
+  lineinfile: dest=/etc/shells line={{ homebrew_zsh }}
 
 - name: Set hombrews zsh as default shell
   sudo: yes
-  user: name=farfanoide shell={{ homebrews_zsh }}
+  user: name=farfanoide shell={{ homebrew_zsh }}

@@ -1,6 +1,11 @@
 ---
 - name: Install VirtualBox
   homebrew_cask: name=virtualbox state=present
+  register: virtualbox_installed
+
+- name: Run VirtualBox once to set default prefs
+  shell: open -a VirtualBox
+  when: virtualbox_installed
 
 - name: Configure VirtualBox default vm folder
   lineinfile:
@@ -8,6 +13,8 @@
     regexp="^(\s*<\w+\sdefaultMachineFolder=\")(\/[\/\w\s]+)(\".*\/>)$"
     line="\1{{ ansible_env.HOME }}/Develop/vm/VirtualBox VMs\3"
     backrefs=yes
+    state=present
+    create=yes
 
 - name: Install Docker
   homebrew: name=docker state=latest
