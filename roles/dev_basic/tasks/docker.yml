@@ -4,7 +4,7 @@
 
 - name: Configure VirtualBox default vm folder
   lineinfile:
-    dest="{{ ansible_env.HOME }}/Desktop/VirtualBox.xml"
+    dest="{{ ansible_env.HOME }}Library/VirtualBox/VirtualBox.xml"
     regexp="^(\s*<\w+\sdefaultMachineFolder=\")(\/[\/\w\s]+)(\".*\/>)$"
     line="\1{{ ansible_env.HOME }}/Develop/vm/VirtualBox VMs\3"
     backrefs=yes
