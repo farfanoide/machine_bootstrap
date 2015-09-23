@@ -25,17 +25,21 @@ ANSIBLE_PLAYBOOK_DIR="$SRC_DIR/ansible"
 [ ! -d $SRC_DIR ] && mkdir -p $SRC_DIR
 
 # Download and install Command Line Tools
-if test $(xcode-select -p > /dev/null); then
-  echo "[INFO] ----- [ Installing Command Line Tools ] -------------------------------"
+if ! xcode-select -p > /dev/null; then
+  echo "[INFO] ----- [Installing Command Line Tools] -------------------------------"
   xcode-select --install
-  echo "[ERROR] ---- [ Run the sript again once CLT are installed ] -----------------"
+  echo "[ERROR] ---- [Run the sript again once CLTools are installed] --------------"
   exit 1
+else
+  echo "[INFO] ----- [Skipping installation of CLTools] -----------------------------"
 fi
 
 # Download and install Homebrew
 if [ ! -x /usr/local/bin/brew ]; then
-  echo "[INFO] ----- [ Installing Homebrew ] -----------------------------------------"
+  echo "[INFO] ----- [Installing Homebrew] ------------------------------------------"
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+else
+  echo "[INFO] ----- [Skipping installation of Homebrew] ----------------------------"
 fi
 
 # Modify the PATH
@@ -43,16 +47,17 @@ export PATH=/usr/local/bin:$PATH
 
 # Download and install Ansible
 if [ ! -x /usr/local/bin/ansible ]; then
-  echo "[INFO] -----[ Installing Ansible ]--------------------------------------------"
+  echo "[INFO] ---- [Installing Ansible] -------------------------------------------"
   brew install ansible
+else
+  echo "[INFO] ----- [Skipping installation of Ansible] ----------------------------"
 fi
 
 
 if [[ "$(ansible --version | head -1 | cut -d' ' -f2 | cut -d '.' -f1)" = "1" ]]; then
   # Ansible 1.9.x was installed, we need version 2.x to use osx_defaults module
 
-  echo "[INFO] ----- [ Ansible v1 found, installing version 2 from Github ] ---------"
-  #[[ "$(type chpwd > /dev/null)" =~ 'function' ]] && unfunction chpwd
+  echo "[INFO] ----- [Ansible v1 found, installing version 2 from Github] ---------"
 
   if [ ! -d $ANSIBLE_DIR/.git ]; then
     mkdir -p $ANSIBLE_DIR
@@ -67,14 +72,14 @@ fi
 
 # Check for ssh keys
 if [ ! -e $HOME/.ssh/id_rsa -o  ! -e $HOME/.ssh/id_rsa.pub ]; then
-  echo "[ERROR] -----[ SSH key pair not found ]---------------------------------------"
+  echo "[ERROR] ---- [SSH key pair not found] --------------------------------------"
   exit 1
 fi
 
 if [ ! -d $ANSIBLE_PLAYBOOK_DIR ]; then
-  echo "[INFO] -----[ Downloading Ansible Playbooks ]---------------------------------"
+  echo "[INFO] ---- [Downloading Ansible Playbooks] --------------------------------"
   git clone git@github.com:farfanoide/machine_bootstrap.git $ANSIBLE_PLAYBOOK_DIR
   (cd $ANSIBLE_PLAYBOOK_DIR && git submodule update --init --recursive)
 fi
 
-ansible-playbook $ANSIBLE_PLAYBOOK_DIR/main.yml
+ansible-playbook $ANSIBLE_PLAYBOOK_DIR/main.yml -K
