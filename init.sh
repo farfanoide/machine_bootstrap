@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # ------------------------------------------------------------------------------
 # Description
@@ -22,21 +22,20 @@ ANSIBLE_DIR="$SRC_DIR/temp/ansible"
 ANSIBLE_PLAYBOOK_DIR="$SRC_DIR/ansible"
 
 
-[ ! -d $SRC_DIR ]     && mkdir -pf $SRC_DIR
-[ ! -d $ANSIBLE_DIR ] && mkdir -pf $ANSIBLE_DIR
+[ ! -d $SRC_DIR ] && mkdir -p $SRC_DIR
 
 # Download and install Command Line Tools
-if [ ! -x /usr/bin/gcc ]; then
+if test $(xcode-select -p > /dev/null); then
   echo "[INFO] ----- [ Installing Command Line Tools ] -------------------------------"
   xcode-select --install
+  echo "[ERROR] ---- [ Run the sript again once CLT are installed ] -----------------"
+  exit 1
 fi
 
 # Download and install Homebrew
 if [ ! -x /usr/local/bin/brew ]; then
   echo "[INFO] ----- [ Installing Homebrew ] -----------------------------------------"
-  ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
-else
-  echo "Skipping homebrew installation, already installed."
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
 # Modify the PATH
@@ -49,15 +48,18 @@ if [ ! -x /usr/local/bin/ansible ]; then
 fi
 
 
-if [[ "$(ansible --version | head -1 | cut -d ' ' -f 2)" =~ '1.*' ]]; then
+if [[ "$(ansible --version | head -1 | cut -d' ' -f2 | cut -d '.' -f1)" = "1" ]]; then
   # Ansible 1.9.x was installed, we need version 2.x to use osx_defaults module
 
   echo "[INFO] ----- [ Ansible v1 found, installing version 2 from Github ] ---------"
-  [ $(type chpwd) =~ 'function' ] && unfunction chpwd
+  #[[ "$(type chpwd > /dev/null)" =~ 'function' ]] && unfunction chpwd
 
-  if [ ! -d $ANSIBLE_DIR ]; then
+  if [ ! -d $ANSIBLE_DIR/.git ]; then
+    mkdir -p $ANSIBLE_DIR
     git clone -b devel https://github.com/ansible/ansible $ANSIBLE_DIR
     (cd $ANSIBLE_DIR && git submodule update --init --recursive)
+    sudo easy_install pip
+    sudo pip install paramiko PyYAML Jinja2 httplib2 six
   fi
 
   source $ANSIBLE_DIR/hacking/env-setup > /dev/null
@@ -75,5 +77,4 @@ if [ ! -d $ANSIBLE_PLAYBOOK_DIR ]; then
   (cd $ANSIBLE_PLAYBOOK_DIR && git submodule update --init --recursive)
 fi
 
-ansible-playbook -i "localhost," -c local $ANSIBLE_PLAYBOOK_DIR/farfanoide_machine.yml
-
+ansible-playbook $ANSIBLE_PLAYBOOK_DIR/main.yml
